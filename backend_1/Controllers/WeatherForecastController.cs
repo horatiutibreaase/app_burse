@@ -36,7 +36,7 @@ namespace backend_1.Controllers
         {
             string[] array = new[]
             {
-                "Valoare1", "Valoare2", "Valoare3"
+                "Valoare1", "Valoare2", "Valoare3", "Valoare4"
             };
             return array;
         }
