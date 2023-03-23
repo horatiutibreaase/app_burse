@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app_burse",
+    "\\app_burse\\backend_1",
+    "\\app_burse\\backend_1\\backend_1",
+    "\\app_burse\\backend_1\\backend_1\\Controllers",
+    "\\app_burse\\backend_1\\backend_1\\Models",
+    "\\app_burse\\backend_1\\backend_1\\Properties",
+    "\\app_burse\\doc",
+    "\\app_burse\\doc\\bd_old"
+  ],
+  "SelectedNode": "\\app_burse\\backend_1\\.gitignore",
+  "PreviewInSolutionExplorer": false
+}
