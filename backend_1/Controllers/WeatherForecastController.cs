@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace backend_1.Controllers
 {
@@ -10,7 +12,7 @@ namespace backend_1.Controllers
         private static readonly string[] Summaries = new[]
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+        };
 
         private readonly ILogger<WeatherForecastController> _logger;
 
@@ -19,7 +21,7 @@ namespace backend_1.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
+        [HttpGet("GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
@@ -31,15 +33,16 @@ namespace backend_1.Controllers
             .ToArray();
         }
 
-        [HttpPost(Name ="PostWheaterForecast")]
+        [HttpPost("PostWheatherForecast")]
         public string[] Post()
         {
             string[] array = new[]
             {
-                "Valoare1", "Valoare2", "Valoare3", "Valoare4"
+                "Val1", "Val2", "Val3", "Valoare4"
             };
             return array;
         }
 
+       
     }
 }
