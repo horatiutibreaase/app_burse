@@ -19,47 +19,55 @@ namespace backend_1.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-        }       
+        }
 
-        [HttpPut("/studenti/refreshAwards")]
-        public IActionResult refreshAwards([FromBody]Burse b)
+        [HttpPost("/verifica/utilizator")]
+        public async Task<IActionResult> VerificaUtilizator([FromBody] Utilizator u)
         {
-            int rowsAffected = 0;
+            Facultate f = new Facultate();
+
+            u.username = "Alex";
+            u.password = "alexPass";
+
+            if (u.username.Contains("_"))
+            {
+
+                f.faculate = u.username.Split("_")[1].ToUpper();
+            }
+
+            Console.WriteLine(u.username);
+            Console.WriteLine(u.password);
 
             try
             {
                 MySqlConnection connection = MyConnection.getConnection().Result;
                 using MySqlCommand command = connection.CreateCommand();
+                command.CommandText = "SELECT * FROM utilizatori " +
+                    "WHERE username = @username AND password = @password ";
+                command.Parameters.AddWithValue("@username", u.username);
+                command.Parameters.AddWithValue("@password", u.password);
 
-                command.CommandText = "UPDATE burse SET denumire = @denumire, cuantum = @cuantum WHERE id = @id";
-                command.Parameters.AddWithValue("@denumire", b.nume);
-                command.Parameters.AddWithValue("@cuantum", b.cuantum);
-                command.Parameters.AddWithValue("@id", b.id);
+                MySqlDataReader reader = await command.ExecuteReaderAsync();
 
-            
-                rowsAffected = command.ExecuteNonQuery();
-                
+                if (reader.HasRows)
+                {
+                    reader.Close();
+                    connection.Close();
+                    return Ok("User si parola gasite");
+                }
+                reader.Close();
                 connection.Close();
-                return Ok(rowsAffected + "rows affected");
+                return NotFound("Date invalide de conectare");
             }
             catch (SqlException e)
             {
                 _logger.LogError(e, "A aparut o eroare in timpul conexiunii la baza de date");
                 return StatusCode(500);
             }
-
         }
 
-        //de completat 
-        [HttpPost("/genereazaPDF")]
-        public void genereazaPDF([FromBody]Facultate f)
-        {
+        
 
-            MySqlConnection connection = MyConnection.getConnection().Result;
 
-            using var command = connection.CreateCommand();
-            command.CommandText = "SELECT * FROM studenti s, burse_alocate bs " +
-                "WHERE s.facultate = ? AND s.anStudiu = ? AND s.cicluInvatamant = ? AND s.id = bs.id AND bs.idBursa = ?;";
-        }
     }
 }
