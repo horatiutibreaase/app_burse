@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using MySqlConnector;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace backend_1.Controllers
 {
@@ -17,10 +20,17 @@ namespace backend_1.Controllers
             _logger = logger;
         }
 
+        //de modificat
         [HttpPost("/studenti/facultate")]
-        public async Task<ActionResult> CitireDateStudent([FromBody] Student s)
+        public async Task<ActionResult> CitireDateStudent([FromBody] JsonObject obj) 
         {
-            List<Student> students = new List<Student>();
+            var facultate = obj["facultate"].ToString();
+            var anStudiu = obj["anStudiu"].ToString();
+            var cicluInvatamant = obj["cicluInvatamant"].ToString();
+            var idStudent = obj["idStudent"].ToString();
+            var idBursa = obj["idBursa"].ToString();
+
+            List<Student> students = new List<Student>(); 
             try
             {
                 MySqlConnection connection = MyConnection.getConnection().Result;
@@ -28,11 +38,11 @@ namespace backend_1.Controllers
                 command.CommandText = "SELECT * FROM studenti s, burse_alocate bs " +
                     "WHERE s.FACULTATE = @facultate AND s.AN_STUDIU = @anStudiu AND s.CICLU_INVATAMANT = @cicluInvatamant" +
                     " AND s.ID_STUDENT = @idStudent AND s.ID_BURSA = @idBursa and s.ID_STUDENT NOT IN (SELECT id from burse_alocate)";
-                command.Parameters.AddWithValue("@facultate", s.facultate);
-                command.Parameters.AddWithValue("@anStudiu", s.anStudiu);
-                command.Parameters.AddWithValue("@cicluInvatamant", s.cicluInvatamant);
-                command.Parameters.AddWithValue("@idStudent", s.idStudent);
-                command.Parameters.AddWithValue("@idBursa", s.idBursa);
+                command.Parameters.AddWithValue("@facultate", facultate);
+                command.Parameters.AddWithValue("@anStudiu", anStudiu);
+                command.Parameters.AddWithValue("@cicluInvatamant", cicluInvatamant);
+                command.Parameters.AddWithValue("@idStudent", idStudent);
+                command.Parameters.AddWithValue("@idBursa", idBursa);
 
                 MySqlDataReader reader = await command.ExecuteReaderAsync();
 
@@ -51,7 +61,9 @@ namespace backend_1.Controllers
                 reader.Close();
                 connection.Close();
 
-                return Ok(students);
+                string studentsJson = JsonSerializer.Serialize(students);
+
+                return Ok(studentsJson);
 
             }
             catch (SqlException e)
@@ -63,10 +75,15 @@ namespace backend_1.Controllers
         }
 
 
-
+        //de modificat
         [HttpPost("/studenti/facultate/burse/alocate")]
-        public async Task<ActionResult> AcordareBurse([FromBody] Student s)
+        public async Task<ActionResult> AcordareBurse([FromBody] JsonObject obj)
         {
+            var facultate = obj["facultate"].ToString();
+            var anStudiu = obj["anStudiu"].ToString();
+            var cicluInvatamant = obj["cicluInvatamant"].ToString();
+            var tipBursa = obj["tipBursa"].ToString();
+
             List<Student> students = new List<Student>();
             try
             {
@@ -75,10 +92,10 @@ namespace backend_1.Controllers
                 command.CommandText = "SELECT * FROM studenti s, burse_alocate bs " +
                     "WHERE s.FACULTATE = @facultate AND s.AN_STUDIU = @anStudiu AND s.CICLU_INVATAMANT" +
                     " = @cicluInvatamant AND s.ID_STUDENT = bs.id AND bs.ID_BURSA = @tipBursa";
-                command.Parameters.AddWithValue("@facultate", s.facultate);
-                command.Parameters.AddWithValue("@anStudiu", s.anStudiu);
-                command.Parameters.AddWithValue("@cicluInvatamant", s.cicluInvatamant);
-                command.Parameters.AddWithValue("@tipBursa", s.tipBursa);
+                command.Parameters.AddWithValue("@facultate", facultate);
+                command.Parameters.AddWithValue("@anStudiu", anStudiu);
+                command.Parameters.AddWithValue("@cicluInvatamant", cicluInvatamant);
+                command.Parameters.AddWithValue("@tipBursa", tipBursa);
 
                 MySqlDataReader reader = await command.ExecuteReaderAsync();
 
@@ -97,7 +114,9 @@ namespace backend_1.Controllers
                 reader.Close();
                 connection.Close();
 
-                return Ok(students);
+                string studentsJson = JsonSerializer.Serialize(students);
+
+                return Ok(studentsJson);
 
             }
             catch (SqlException e)
@@ -109,9 +128,13 @@ namespace backend_1.Controllers
 
 
         [HttpPost("/studenti/facultate/admBurse")]
-        public async Task<ActionResult> admBurse([FromBody] Student s)
+        public async Task<ActionResult> admBurse([FromBody] JsonObject obj)
         {
-            Console.WriteLine("Request1: " + s.facultate + " " + s.anStudiu + " " + s.tipBursa);
+            var facultate = obj["facultate"].ToString();
+            var anStudiu = obj["anStudiu"].ToString();
+            var tipBursa = obj["tipBursa"].ToString();
+
+            Console.WriteLine("Request1: " + facultate + " " + anStudiu + " " + tipBursa);
 
             List<Student> students = new List<Student>();
             try
@@ -120,9 +143,9 @@ namespace backend_1.Controllers
                 using MySqlCommand command = connection.CreateCommand();
                 command.CommandText = "SELECT * FROM studenti s, burse_alocate bs" +
                     " WHERE s.FACULTATE =@facultate AND s.AN_STUDIU = @anStudiu AND s.ID_STUDENT = bs.id AND bs.ID_BURSA = @tipBursa";
-                command.Parameters.AddWithValue("@facultate", s.facultate);
-                command.Parameters.AddWithValue("@tipBursa", s.tipBursa);
-                command.Parameters.AddWithValue("@anStudiu", s.anStudiu);
+                command.Parameters.AddWithValue("@facultate", facultate);
+                command.Parameters.AddWithValue("@tipBursa", tipBursa);
+                command.Parameters.AddWithValue("@anStudiu", anStudiu);
 
                 MySqlDataReader reader = await command.ExecuteReaderAsync();
 
@@ -141,7 +164,9 @@ namespace backend_1.Controllers
                 reader.Close();
                 connection.Close();
 
-                return Ok(students);
+                string studentsJson = JsonSerializer.Serialize(students);
+
+                return Ok(studentsJson);
 
             }
             catch (SqlException e)
@@ -208,6 +233,18 @@ namespace backend_1.Controllers
                 _logger.LogError(e, "A aparut o eroare in timpul conexiunii la baza de date");
                 return StatusCode(500);
             }
+        }
+
+        //de completat 
+        [HttpPost("/genereazaPDF")]
+        public void genereazaPDF([FromBody] Facultate f)
+        {
+
+            MySqlConnection connection = MyConnection.getConnection().Result;
+
+            using var command = connection.CreateCommand();
+            command.CommandText = "SELECT * FROM studenti s, burse_alocate bs " +
+                "WHERE s.facultate = ? AND s.anStudiu = ? AND s.cicluInvatamant = ? AND s.id = bs.id AND bs.idBursa = ?;";
         }
 
 

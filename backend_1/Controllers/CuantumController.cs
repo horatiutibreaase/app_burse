@@ -16,50 +16,33 @@ namespace backend_1.Controllers
             _logger = logger;
         }
 
-        [HttpPost("/verifica/utilizator")]
-        public async Task<IActionResult> VerificaUtilizator()
+        [HttpPut("/studenti/refreshAwards")]
+        public IActionResult refreshAwards([FromBody] Burse b)
         {
-            Utilizator u = new Utilizator();
-            Facultate f = new Facultate();
-
-            u.username = "Alex";
-            u.password = "alexPass";
-
-            if (u.username.Contains("_"))
-            {
-
-                f.faculate = u.username.Split("_")[1].ToUpper();
-            }
-
-            Console.WriteLine(u.username);
-            Console.WriteLine(u.password);
+            int rowsAffected = 0;
 
             try
             {
                 MySqlConnection connection = MyConnection.getConnection().Result;
                 using MySqlCommand command = connection.CreateCommand();
-                command.CommandText = "SELECT * FROM utilizatori " +
-                    "WHERE username = @username AND password = @password ";
-                command.Parameters.AddWithValue("@username", u.username);
-                command.Parameters.AddWithValue("@password", u.password);
 
-                MySqlDataReader reader = await command.ExecuteReaderAsync();
+                command.CommandText = "UPDATE burse SET denumire = @denumire, cuantum = @cuantum WHERE id = @id";
+                command.Parameters.AddWithValue("@denumire", b.nume);
+                command.Parameters.AddWithValue("@cuantum", b.cuantum);
+                command.Parameters.AddWithValue("@id", b.id);
 
-                if (reader.HasRows)
-                {
-                    reader.Close();
-                    connection.Close();
-                    return Ok("User si parola gasite");
-                }
-                reader.Close();
+
+                rowsAffected = command.ExecuteNonQuery();
+
                 connection.Close();
-                return NotFound("Date invalide de conectare");
+                return Ok(rowsAffected + "rows affected");
             }
             catch (SqlException e)
             {
                 _logger.LogError(e, "A aparut o eroare in timpul conexiunii la baza de date");
                 return StatusCode(500);
             }
+
         }
     }
 }
