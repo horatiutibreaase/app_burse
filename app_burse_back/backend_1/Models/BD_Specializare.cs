@@ -8,11 +8,11 @@ namespace backend_1.Models
         [Key]
         public int id_specializare { get; set; }
 
-        [StringLength(60,ErrorMessage = "Limita de 70 de caractere")]
+        [StringLength(60,ErrorMessage = "Limita de 60 de caractere")]
         public string? denumire_specializare { get; set; }
 
         [ForeignKey("BD_Facultate")]
-        public BD_Facultate? id_facultate { get; set; }//foreign key, un obiect de tip bd_facultate, schimbi u=numele sau nu?  
+        public BD_Facultate? id_facultate { get; set; }  
 
 
     }

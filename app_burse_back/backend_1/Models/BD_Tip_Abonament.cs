@@ -6,7 +6,7 @@ namespace backend_1.Models
     public class BD_Tip_Abonament
     {
         [ForeignKey("BD_Abonament")]
-        public BD_Abonament? cod_abo {  get; set; }
+        public BD_Abonament? cod_abo { get; set; }
 
         [StringLength(20,ErrorMessage ="Limita de 20 de caractere")]
         public string? denumire_abonament { get; set; }

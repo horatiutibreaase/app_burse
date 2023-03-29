@@ -28,8 +28,8 @@ namespace backend_1.Models
         [ForeignKey("BD_Specializare")]
         public BD_Specializare? id_specializare { get; set; }
 
-        [StringLength(2, ErrorMessage = "Limita de 2 caractere")]
-        public string? seria { get; set; }
+        //[StringLength(2, ErrorMessage = "Limita de 2 caractere")]
+        //public string? seria { get; set; }
 
         public int? grupa { get; set; }
 
@@ -37,7 +37,10 @@ namespace backend_1.Models
         [Range(0,99999999.99)]//seteaza intervalul de valori, pozitiv pt ca e medie
         public decimal? med_pond { get; set; }
 
-        [StringLength(1,ErrorMessage ="Limita de 1 caracter")]
-        public string? valid_sociala { get; set;}
+        public byte? valid_sociala { get; set;}
+
+        [StringLength(34, ErrorMessage = "IBAN trebuie sa aiba 34 de caractere")]
+        [RegularExpression(@"(.{34})")]
+        public string? IBAN { get; set; }
     }
 }
