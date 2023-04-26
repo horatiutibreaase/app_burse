@@ -1,18 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace backend_1
+namespace backend_1.Models;
+
+[Table("FACULTATE")]
+public partial class Facultate
 {
-    public class Facultate
-    {
-        public string faculate { get; set; }
+    [Key]
+    [Column("ID_FACULTATE")]
+    public int IdFacultate { get; set; }
 
-        public string anStudiu { get; set; }
+    [Column("DENUMIRE")]
+    [StringLength(70)]
+    [Unicode(false)]
+    public string? Denumire { get; set; }
 
-        public string cicluInvatamant { get; set; }
-
-        public string formaFin { get; set; }
-
-        public string nationanlitate { get; set; }
-    }
-
+    [InverseProperty("IdFacultateNavigation")]
+    public virtual ICollection<Specializare> Specializares { get; set; } = new List<Specializare>();
 }

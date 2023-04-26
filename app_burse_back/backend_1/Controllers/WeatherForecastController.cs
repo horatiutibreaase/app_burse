@@ -22,9 +22,9 @@ namespace backend_1.Controllers
         }
 
         [HttpGet("GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        public IEnumerable<temp_WeatherForecast> Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            return Enumerable.Range(1, 5).Select(index => new temp_WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = Random.Shared.Next(-20, 55),

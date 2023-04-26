@@ -17,7 +17,7 @@ namespace backend_1.Controllers
         }
 
         [HttpPut("/studenti/refreshAwards")]
-        public IActionResult refreshAwards([FromBody] Burse b)
+        public IActionResult refreshAwards([FromBody] temp_Burse b)
         {
             int rowsAffected = 0;
 
