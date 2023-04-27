@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app_back",
+    "\\app_back\\app_burse",
+    "\\app_back\\app_burse\\app_burse_front",
+    "\\app_back\\app_burse\\app_burse_front\\src",
+    "\\app_back\\app_burse\\app_burse_front\\src\\pages",
+    "\\app_burse_back",
+    "\\app_burse_back\\backend_1",
+    "\\app_burse_back\\backend_1\\Controllers",
+    "\\backend_1"
+  ],
+  "SelectedNode": "\\app_burse_back\\backend_1\\Controllers\\HomeController.cs",
+  "PreviewInSolutionExplorer": false
+}
