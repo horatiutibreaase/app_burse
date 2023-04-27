@@ -24,13 +24,13 @@ namespace backend_1.Controllers
         [HttpPost("/studenti/facultate")]
         public async Task<ActionResult> CitireDateStudent([FromBody] JsonObject obj) 
         {
-            var facultate = obj["facultate"].ToString();
-            var anStudiu = obj["anStudiu"].ToString();
-            var cicluInvatamant = obj["cicluInvatamant"].ToString();
-            var idStudent = obj["idStudent"].ToString();
-            var idBursa = obj["idBursa"].ToString();
+            var facultate = obj["facultate"]?.ToString();
+            var anStudiu = obj["anStudiu"]?.ToString();
+            var cicluInvatamant = obj["cicluInvatamant"]?.ToString();
+            var idStudent = obj["idStudent"]?.ToString();
+            var idBursa = obj["idBursa"]?.ToString();
 
-            List<Student> students = new List<Student>(); 
+            List<temp_Student> students = new List<temp_Student>(); 
             try
             {
                 MySqlConnection connection = MyConnection.getConnection().Result;
@@ -48,7 +48,7 @@ namespace backend_1.Controllers
 
                 while (await reader.ReadAsync())
                 {
-                    Student student = new Student();
+                    temp_Student student = new temp_Student();
 
                     student.facultate = reader.GetString("FACULTATE");
                     student.anStudiu = reader.GetString("AN_STUDIU");
@@ -79,12 +79,12 @@ namespace backend_1.Controllers
         [HttpPost("/studenti/facultate/burse/alocate")]
         public async Task<ActionResult> AcordareBurse([FromBody] JsonObject obj)
         {
-            var facultate = obj["facultate"].ToString();
-            var anStudiu = obj["anStudiu"].ToString();
-            var cicluInvatamant = obj["cicluInvatamant"].ToString();
-            var tipBursa = obj["tipBursa"].ToString();
+            var facultate = obj["facultate"]?.ToString();
+            var anStudiu = obj["anStudiu"]?.ToString();
+            var cicluInvatamant = obj["cicluInvatamant"]?.ToString();
+            var tipBursa = obj["tipBursa"]?.ToString();
 
-            List<Student> students = new List<Student>();
+            List<temp_Student> students = new List<temp_Student>();
             try
             {
                 MySqlConnection connection = MyConnection.getConnection().Result;
@@ -101,7 +101,7 @@ namespace backend_1.Controllers
 
                 while (await reader.ReadAsync())
                 {
-                    Student student = new Student();
+                    temp_Student student = new temp_Student();
 
                     student.facultate = reader.GetString("FACULTATE");
                     student.anStudiu = reader.GetString("AN_STUDIU");
@@ -130,13 +130,13 @@ namespace backend_1.Controllers
         [HttpPost("/studenti/facultate/admBurse")]
         public async Task<ActionResult> admBurse([FromBody] JsonObject obj)
         {
-            var facultate = obj["facultate"].ToString();
-            var anStudiu = obj["anStudiu"].ToString();
-            var tipBursa = obj["tipBursa"].ToString();
+            var facultate = obj["facultate"]?.ToString();
+            var anStudiu = obj["anStudiu"]?.ToString();
+            var tipBursa = obj["tipBursa"]?.ToString();
 
             Console.WriteLine("Request1: " + facultate + " " + anStudiu + " " + tipBursa);
 
-            List<Student> students = new List<Student>();
+            List<temp_Student> students = new List<temp_Student>();
             try
             {
                 MySqlConnection connection = MyConnection.getConnection().Result;
@@ -151,7 +151,7 @@ namespace backend_1.Controllers
 
                 while (await reader.ReadAsync())
                 {
-                    Student student = new Student();
+                    temp_Student student = new temp_Student();
 
                     student.facultate = reader.GetString("FACULTATE");
                     student.anStudiu = reader.GetString("AN_STUDIU");
@@ -237,7 +237,7 @@ namespace backend_1.Controllers
 
         //de completat 
         [HttpPost("/genereazaPDF")]
-        public void genereazaPDF([FromBody] Facultate f)
+        public void genereazaPDF([FromBody] temp_Facultate f)
         {
 
             MySqlConnection connection = MyConnection.getConnection().Result;

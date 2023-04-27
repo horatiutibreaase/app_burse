@@ -22,9 +22,9 @@ namespace backend_1.Controllers
         }
 
         [HttpPost("/verifica/utilizator")]
-        public async Task<IActionResult> VerificaUtilizator([FromBody] Utilizator u)
+        public async Task<IActionResult> VerificaUtilizator([FromBody] temp_Utilizator u)
         {
-            Facultate f = new Facultate();
+            temp_Facultate f = new temp_Facultate();
 
             u.username = "Alex";
             u.password = "alexPass";

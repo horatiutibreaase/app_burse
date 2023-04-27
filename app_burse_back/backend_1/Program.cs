@@ -1,3 +1,4 @@
+using backend_1.Models;
 using Microsoft.Data.SqlClient;
 using MySqlConnector;
 

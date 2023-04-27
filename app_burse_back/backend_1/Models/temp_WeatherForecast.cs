@@ -1,6 +1,6 @@
 namespace backend_1
 {
-    public class WeatherForecast
+    public class temp_WeatherForecast
     {
         public DateTime Date { get; set; }
 
