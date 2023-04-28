@@ -1,6 +1,17 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\app_back",
+    "\\app_back\\app_burse",
+    "\\app_back\\app_burse\\app_burse_front",
+    "\\app_back\\app_burse\\app_burse_front\\src",
+    "\\app_back\\app_burse\\app_burse_front\\src\\pages",
+    "\\app_burse_back",
+    "\\app_burse_back\\backend_1",
+    "\\app_burse_back\\backend_1\\Controllers",
+    "\\app_burse_back\\backend_1\\Models",
+    "\\backend_1"
   ],
+  "SelectedNode": "\\app_burse_back\\backend_1\\Controllers\\CuantumController.cs",
   "PreviewInSolutionExplorer": false
 }

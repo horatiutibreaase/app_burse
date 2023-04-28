@@ -15,6 +15,8 @@ namespace backend_1.Controllers
 
         //TEST GIT
         private readonly ILogger<HomeController> _logger;
+        private readonly String username = "admin";
+        private readonly String password = "admin";
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -24,50 +26,16 @@ namespace backend_1.Controllers
         [HttpPost("/verifica/utilizator")]
         public async Task<IActionResult> VerificaUtilizator([FromBody] temp_Utilizator u)
         {
-            temp_Facultate f = new temp_Facultate();
 
-            u.username = "Alex";
-            u.password = "alexPass";
-
-            if (u.username.Contains("_"))
+            if (u.username.Equals(username) && u.password.Equals(password))
             {
-
-                f.faculate = u.username.Split("_")[1].ToUpper();
+                return Ok("User si parola gasite");
             }
-
-            Console.WriteLine(u.username);
-            Console.WriteLine(u.password);
-
-            try
+            else
             {
-                MySqlConnection connection = MyConnection.getConnection().Result;
-                using MySqlCommand command = connection.CreateCommand();
-                command.CommandText = "SELECT * FROM utilizatori " +
-                    "WHERE username = @username AND password = @password ";
-                command.Parameters.AddWithValue("@username", u.username);
-                command.Parameters.AddWithValue("@password", u.password);
-
-                MySqlDataReader reader = await command.ExecuteReaderAsync();
-
-                if (reader.HasRows)
-                {
-                    reader.Close();
-                    connection.Close();
-                    return Ok("User si parola gasite");
-                }
-                reader.Close();
-                connection.Close();
                 return NotFound("Date invalide de conectare");
             }
-            catch (SqlException e)
-            {
-                _logger.LogError(e, "A aparut o eroare in timpul conexiunii la baza de date");
-                return StatusCode(500);
-            }
         }
-
-        
-
 
     }
 }
