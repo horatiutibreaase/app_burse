@@ -15,11 +15,13 @@ namespace backend_1.Controllers
 
         //TEST GIT
         private readonly ILogger<HomeController> _logger;
-        private readonly String username = "admin";
-        private readonly String password = "admin";
+        private readonly temp_Utilizator admin;
+        private readonly temp_Utilizator secretariat;
 
         public HomeController(ILogger<HomeController> logger)
         {
+            admin = new temp_Utilizator("admin","admin");
+            secretariat = new temp_Utilizator("secretariat", "secretariat");
             _logger = logger;
         }
 
@@ -27,13 +29,17 @@ namespace backend_1.Controllers
         public IActionResult VerificaUtilizator([FromBody] temp_Utilizator u)
         {
 
-            if (u.username.Equals(username) && u.password.Equals(password))
+            if (u.username.Equals(admin.username) && u.password.Equals(admin.password))
             {
-                return Ok("User si parola gasite");
+                return Ok("Admin - User si parola gasite");
+            }
+            else if(u.username.Equals(secretariat.username) && u.password.Equals(secretariat.password))
+            {
+                return Ok("Secretariat - User si parola gasite");
             }
             else
             {
-                return NotFound("Date invalide de conectare");
+                return NotFound("Date de conectare invalide");
             }
         }
 
