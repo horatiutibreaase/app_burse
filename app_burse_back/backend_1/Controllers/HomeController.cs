@@ -24,7 +24,7 @@ namespace backend_1.Controllers
         }
 
         [HttpPost("/verifica/utilizator")]
-        public async Task<IActionResult> VerificaUtilizator([FromBody] temp_Utilizator u)
+        public IActionResult VerificaUtilizator([FromBody] temp_Utilizator u)
         {
 
             if (u.username.Equals(username) && u.password.Equals(password))
